@@ -166,9 +166,9 @@ ft::map<Key, T, Compare>::map(InputIt first, InputIt last, const Compare &comp)
 		//std::cout << "copy " << first->second << std::endl;
 		this->insert(*first);
 		first++;
-		cmp++;
+//		cmp++;
 	}
-	this->nb = cmp;
+//	this->nb = cmp;
 	this->comp = comp;
 }
 
@@ -320,11 +320,12 @@ typename ft::pair<typename ft::map<Key, T, Compare>::iterator, bool> ft::map<Key
 template<class Key, class T, class Compare>
 typename ft::map<Key, T, Compare>::iterator ft::map<Key, T, Compare>::insert(typename ft::map<Key, T, Compare>::iterator hint, const value_type& value)
 {
+	(void)hint;
 	RBtree <Key, T, Compare> *test = this->tree->search(this->tree, value.first, this->comp);
 	if (test != NULL)
 		return (iterator(this->tree, &(this->tree), true));
 	RBtree <Key, T, Compare> *n = this->tree->RBpair(value.first, value.second, this->Alloc);
-	this->tree = this->tree->insert(hint.getcur(), n, this->comp);
+	this->tree = this->tree->insert(this->tree, n, this->comp);
 	this->nb++;
 
 	RBtree <Key, T, Compare> *ret = this->tree->search(this->tree, value.first, this->comp);
@@ -335,16 +336,12 @@ template<class Key, class T, class Compare>
 template <class InputIt>
 void ft::map<Key, T, Compare>::insert(InputIt first, InputIt last)
 {
-	size_t cmp;
 
-	cmp = 0;
 	while (first != last)
 	{
 		this->insert(*first);
 		first++;
-		cmp++;
 	}
-	this->nb += cmp; 
 }
 
 //Clear
@@ -417,10 +414,25 @@ void ft::map<Key, T, Compare>::erase(ft::map<Key, T, Compare>::iterator first, f
 template<class Key, class T, class Compare>
 void ft::map<Key, T, Compare>::swap(ft::map<Key, T, Compare> &x)
 {
-	ft::map<Key, T, Compare> tmp;
-	tmp = *this;
-	*this = x;
-	x = tmp;
+	RBtree<Key, T, Compare> *tree_tmp;
+	key_compare comp_tmp;
+	size_t nb_tmp;
+	allocator_type Alloc_tmp;
+
+	tree_tmp = this->tree;
+	comp_tmp = this->comp;
+	nb_tmp = this->nb;
+	Alloc_tmp = this->Alloc;
+
+	this->tree = x.tree;
+	this->comp = x.key_comp();
+	this->nb = x.size();
+	this->Alloc = x.get_allocator();
+
+	x.tree = tree_tmp;
+	x.comp = comp_tmp;
+	x.nb = nb_tmp;
+	x.Alloc = Alloc_tmp;
 }
 
 template<class Key, class T, class Compare>
@@ -653,6 +665,8 @@ typename ft::map<Key, T, Compare>::allocator_type ft::map<Key, T, Compare>::get_
 template<class Key, class T, class Compare>
 bool ft::operator==(const ft::map<Key, T, Compare> &lhs, const ft::map<Key, T, Compare> &rhs)
 {
+	if (lhs.size() != rhs.size())
+		return (false);
 	if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
 		return (true);
 	return (false);
@@ -661,7 +675,7 @@ bool ft::operator==(const ft::map<Key, T, Compare> &lhs, const ft::map<Key, T, C
 template<class Key, class T, class Compare>
 bool ft::operator!=(const ft::map<Key, T, Compare> &lhs, const ft::map<Key, T, Compare> &rhs)
 {
-	if (ft::equal(lhs.begin(), lhs.end(), rhs.begin()))
+	if (lhs == rhs)
 		return (false);
 	return (true);
 }

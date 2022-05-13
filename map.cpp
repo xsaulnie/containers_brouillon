@@ -36,8 +36,9 @@ template<class Key, class T, class Compare>
 void disp_m(ns::map<Key, T, Compare> &m)
 {
 	(void)m;
-	//m.disp_map(m);
+	m.disp_map(m);
 }
+
 
 
 
@@ -59,19 +60,79 @@ void test_map()
 		std::cout << "egality " << (--pouend)->first << " and " <<(--npouend)->first <<std::endl;
 	else
 		std::cout << "inegality" << std::endl;
+	ns::map<int, int>::iterator emptyd;
+	ns::map<int, int>::iterator emptye;
+
+	ns::map<int, int> emptyness;
+	emptyd = emptyness.begin();
+	emptye = emptyness.end();
+
+	if (emptyd == emptye)
+		std::cout << "deb is end for empty" << std::endl;
+	else
+		std::cout << "deb is not end for empty" << std::endl;
+
+	ns::map<char, int> mp1;
+	ns::map<char, int> mp2;
+
+	mp1['a'] = 2; mp1['b'] = 3; mp1['c'] = 4; mp1['d'] = 5;
+	mp2['a'] = 2; mp2['b'] = 3; mp2['c'] = 4; mp2['d'] = 5;
+
+	//dispiter_map(mp1);
+	//disp_m(mp1);
+
+	mp2['e'] = 6; mp2['f'] = 7; mp2['h'] = 8; mp2['h'] = 9;
+
+	//dispiter_map(mp2);
+	//disp_m(mp2);
+
+	if (mp1 == mp2)
+		std::cout << "OK" << std::endl;
+
+
+/*
+	ns::map<int, std::string> mp;
+
+	mp.insert(ns::pair<int, std::string>(42, "lol"));
+	mp.insert(ns::pair<int, std::string>(42, "mdr"));
+	mp.insert(ns::pair<int, std::string>(50, "mdr"));
+	mp.insert(ns::pair<int, std::string>(35, "funny"));
+	mp.insert(ns::pair<int, std::string>(45, "bunny"));
+	mp.insert(ns::pair<int, std::string>(21, "fizz"));
+	mp.insert(ns::pair<int, std::string>(38, "buzz"));
+	dispiter_map(mp);
+	disp_m(mp);
+	mp.insert(mp.begin(), ns::pair<int, std::string>(55, "fuzzy"));
+
+	dispiter_map(mp);
+	disp_m(mp);
+	
+	
 	std::list<ns::pair<const int, int>> loust;
 
 	for (int i = 0 ; i < 7 ; i++)
 		loust.push_back(ns::pair<const int, int>(7 - i, i));
+	ns::map<int, int> mp;
+
+	std::cout << "size : " << mp.size() << std::endl;
+	mp.insert(loust.begin(), loust.end());
+	dispiter_map(mp);
+	std::cout << "size : " << mp.size() << std::endl;
+	
 	ns::map<int, int> mp(loust.begin(), loust.end());
 
 	dispiter_map(mp);
+
+	
 
 	ns::map<int, int>::iterator it = mp.begin(), ite = mp.end();
 
 	ns::map<int, int> mp_range(it, --(--ite));
 
 	dispiter_map(mp_range);
+	*/
+
+
 
 	return;
 
