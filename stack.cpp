@@ -10,6 +10,7 @@ void test_stack()
 
 	c1.push(5);
 	std::cout << "pushed 5 on c1" << std::endl;
+	return ;
 	std::cout << "c1 size : " << c1.size() << " c1 top "<< c1.top() <<std::endl;
 
 	ns::stack<int> c2(c1);

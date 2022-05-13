@@ -198,6 +198,7 @@ ft::vector<T, Allocator>::vector()
 	this->tab = NULL;
 	this->alen = 0;
 	this->len = 0;
+	//std::cout <<"constructor 1" << std::endl;
 }
 
 template<class T, class Allocator>
@@ -211,6 +212,7 @@ ft::vector<T, Allocator>::vector(size_type n, const value_type &val)
 	}
 	this->alen = n;
 	this->len = n;
+	//std::cout <<"constructor 2" << std::endl;
 }
 
 template<class T, class Allocator>
@@ -240,6 +242,7 @@ ft::vector<T, Allocator>::vector(InputIterator first, typename ft::enable_if<!ft
 	}
 	this->alen = dist;
 	this->len = dist;
+	//std::cout <<"constructor 3" << std::endl;
 }
 
 template<class T, class Allocator>
@@ -253,6 +256,7 @@ ft::vector<T, Allocator>::vector(const vector &x)
 	}
 	this->alen = x.size();
 	this->len = x.size();
+	//std::cout <<"constructor 4" << std::endl;
 }
 
 namespace ft
@@ -931,9 +935,12 @@ template<class T, class Allocator>
 void ft::vector<T, Allocator>::push_back(const value_type &val)
 {
 	size_t tmp;
-
-	if (this->tab == NULL)
+	//std::cout << "strange "<< this->tab<< " and " << this->size() << std::endl;
+	if (this->len == 0 && this->alen == 0)
 	{
+		//std::cout << "lol" << std::endl;
+		if (this->tab != NULL)
+			(this->Alloc).deallocate(this->tab, 1);
 		this->tab = (this->Alloc).allocate(1);
 		(this->Alloc).construct(this->tab, val);
 		this->len = 1;

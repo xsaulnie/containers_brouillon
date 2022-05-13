@@ -1,6 +1,7 @@
 #ifndef STACK_HPP
 #define STACK_HPP
 
+#include "vector.hpp"
 namespace ft
 {
 template<class T, class Container = ft::vector<T> >
@@ -35,23 +36,68 @@ class stack
 
 		//Operator
 		friend bool ft::operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+		friend bool ft::operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+		friend bool ft::operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+		friend bool ft::operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+		friend bool ft::operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+		friend bool ft::operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
 	protected:
 		Container c;
 };
 template<class T, class Container>
 bool operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+template<class T, class Container>
+bool operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+template<class T, class Container>
+bool operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+template<class T, class Container>
+bool operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+template<class T, class Container>
+bool operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
+template<class T, class Container>
+bool operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs);
 }
 
 template<class T, class Container>
 bool ft::operator==(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
 {
-	return(lhs.c == rhs.c);
+	return (lhs.c == rhs.c);
 }
 
 template<class T, class Container>
-ft::stack<T, Container>::stack(const Container &cont)
+bool ft::operator!=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
 {
-	this->c = cont;
+	return (lhs.c != rhs.c);
+}
+
+template<class T, class Container>
+bool ft::operator<=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+{
+	return (lhs.c <= rhs.c);
+}
+
+template<class T, class Container>
+bool ft::operator>=(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+{
+	return (lhs.c >= rhs.c);
+}
+
+template<class T, class Container>
+bool ft::operator<(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+{
+	return (lhs.c < rhs.c);
+}
+
+template<class T, class Container>
+bool ft::operator>(const ft::stack<T, Container> &lhs, const ft::stack<T, Container> &rhs)
+{
+	return (lhs.c > rhs.c);
+}
+
+template<class T, class Container>
+ft::stack<T, Container>::stack(const Container &cont) : c(cont)
+{
+	//this->c = cont;
 }
 
 template<class T, class Container>
@@ -63,7 +109,7 @@ ft::stack<T, Container>::stack(const stack &other)
 template<class T, class Container>
 ft::stack<T, Container>::~stack()
 {
-
+	
 }
 
 template<class T, class Container>
