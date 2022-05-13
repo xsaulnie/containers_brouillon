@@ -25,7 +25,7 @@ void dispiter_map(ns::map<T, V> &m)
 	std::cout << "------------------------------" << std::endl;
 	while ( it != theend)
 	{
-		std::cout << "(" << it->first << ")" << " " << "(" << it->second << ")" <<std::endl;
+		std::cout << "(" << it->second << ")" <<std::endl;
 		it++;
 	}
 	std::cout << "------------------------------" << std::endl;
@@ -38,6 +38,9 @@ void disp_m(ns::map<Key, T, Compare> &m)
 	(void)m;
 	//m.disp_map(m);
 }
+
+
+
 
 void test_map()
 {
@@ -56,6 +59,20 @@ void test_map()
 		std::cout << "egality " << (--pouend)->first << " and " <<(--npouend)->first <<std::endl;
 	else
 		std::cout << "inegality" << std::endl;
+	std::list<ns::pair<const int, int>> loust;
+
+	for (int i = 0 ; i < 7 ; i++)
+		loust.push_back(ns::pair<const int, int>(7 - i, i));
+	ns::map<int, int> mp(loust.begin(), loust.end());
+
+	dispiter_map(mp);
+
+	ns::map<int, int>::iterator it = mp.begin(), ite = mp.end();
+
+	ns::map<int, int> mp_range(it, --(--ite));
+
+	dispiter_map(mp_range);
+
 	return;
 
 	ns::map <int, int> test;

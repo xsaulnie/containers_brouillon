@@ -29,6 +29,7 @@ class map_iterator
 		map_iterator(RBtree<T, V, C> *init, RBtree<T, V, C> **rac);
 		//map_iterator(const map_iterator<T, V, C> &cpy);
 		map_iterator(RBtree<T, V, C> *iend, RBtree<T, V, C> **rac, bool sen);
+		//map_iterator operator=(const map_iterator &rhs);
 
 		map_iterator &operator++();
 		map_iterator operator++(int);
@@ -39,6 +40,7 @@ class map_iterator
 
 		RBtree<T, V, C> *getcur() const;
 		bool getsen() const;
+		RBtree<T, V, C> **getrac() const;
 		class Badoperation : public std::exception // le vrai ne segault pas
 		{
 			public:
@@ -61,7 +63,16 @@ bool operator!=(ft::map_iterator<T, V, C> &lhs, ft::map_iterator<T, V, C> &rhs);
 template<class T, class V, class C>
 bool operator!=(const ft::map_iterator<T, V, C> &lhs, const ft::map_iterator<T, V, C> &rhs);
 }
-
+/*
+template<class T, class V, class C>
+ft::map_iterator<T, V, C> ft::map_iterator<T, V, C>::operator=(const ft::map_iterator<T, V, C> &rhs)
+{
+	this->cur = rhs.getcur();
+	this->sentinel = rhs.getsen();
+	this->rac = rhs.getrac();
+	return (*this);
+}
+*/
 template<class T, class V, class C>
 RBtree<T, V, C> *ft::map_iterator<T, V, C>::getcur() const
 {
@@ -72,6 +83,12 @@ template<class T, class V, class C>
 bool ft::map_iterator<T, V, C>::getsen() const
 {
 	return (this->sentinel);
+}
+
+template<class T, class V, class C>
+RBtree<T, V, C> **ft::map_iterator<T, V, C>::getrac() const
+{
+	return (this->rac);
 }
 
 template<class T, class V, class C>
@@ -315,7 +332,7 @@ bool ft::operator!=(ft::map_iterator<T, V, C> &lhs, ft::map_iterator<T, V, C> &r
 		return (true);
 	if (lhs.getsen() == true)
 		return (false);
-	if (lhs.getsen() != rhs.getsen())
+	if (lhs.getcur() != rhs.getcur())
 		return (true);
 	return (false);
 }
@@ -339,7 +356,7 @@ bool ft::operator!=(const ft::map_iterator<T, V, C> &lhs, const ft::map_iterator
 		return (true);
 	if (lhs.getsen() == true)
 		return (false);
-	if (lhs.getsen() != rhs.getsen())
+	if (lhs.getcur() != rhs.getcur())
 		return (true);
 	return (false);
 }
@@ -418,7 +435,7 @@ bool ft::map_iterator<T, V, C>::operator!=(const ft::const_map_iterator<T, V, C>
 		return (true);
 	if (this->getsen() == true)
 		return (false);
-	if (this->getsen() != rhs.getsen())
+	if (this->getcur() != rhs.getcur())
 		return (true);
 	return (false);
 }

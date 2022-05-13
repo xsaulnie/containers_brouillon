@@ -163,6 +163,7 @@ ft::map<Key, T, Compare>::map(InputIt first, InputIt last, const Compare &comp)
 	cmp = 0;
 	while (first != last)
 	{
+		//std::cout << "copy " << first->second << std::endl;
 		this->insert(*first);
 		first++;
 		cmp++;
@@ -270,7 +271,9 @@ typename ft::map<Key, T, Compare>::iterator ft::map<Key, T, Compare>::end()
 template<class Key, class T, class Compare>
 typename ft::map<Key, T, Compare>::const_iterator ft::map<Key, T, Compare>::end() const
 {
-	return(const_iterator(this->tree, &(this->tree),true));
+
+	RBtree<Key, T, Compare> *const*tmp = &(this->tree);
+	return(const_iterator(this->tree, tmp, true));
 }
 
 template<class Key, class T, class Compare>
