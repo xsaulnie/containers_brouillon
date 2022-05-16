@@ -76,6 +76,27 @@ void test_capacity(bool reserved)
 
 void test_vector()
 {
+
+	ns::vector<int> resiz(12, 12);
+	std::cout << "s: "<< resiz.size() << "c:" << resiz.capacity() << std::endl;
+	resiz.resize(26);
+		std::cout << "s: "<< resiz.size() << "c:" << resiz.capacity() << std::endl;
+	return ;
+
+	resiz.resize(1028);
+	std::cout << "s: "<< resiz.size() << "c:" << resiz.capacity() << std::endl;
+	return ;
+  ns::vector<int> Myvector (3,100);
+  ns::vector<int>::iterator mit;
+
+  mit = Myvector.begin();
+  mit = Myvector.insert ( mit , 200 );
+  std::cout << Myvector.capacity() <<" " << Myvector.size()<<" myvector contains:";
+  for (mit=Myvector.begin(); mit<Myvector.end(); mit++)
+    std::cout << ' ' << *mit;
+  std::cout << '\n';
+	return ;
+
 	ns::vector<int> vct(10);
 	ns::vector<int> vct2;
 

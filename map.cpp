@@ -36,7 +36,7 @@ template<class Key, class T, class Compare>
 void disp_m(ns::map<Key, T, Compare> &m)
 {
 	(void)m;
-	m.disp_map(m);
+	//m.disp_map(m);
 }
 
 

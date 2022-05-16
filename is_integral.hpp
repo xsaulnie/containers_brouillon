@@ -15,7 +15,6 @@ struct is_integral
 
 };
 
-
 template<>
 struct ft::is_integral<int>
 {

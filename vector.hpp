@@ -398,11 +398,16 @@ void ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterato
 	add = 0;
 	if (this->len + dist > this->alen)
 	{
-		new_size = this->alen;
+		if (this->len * 2 >= this->len + dist)
+			new_size = this->len * 2;
+		else
+			new_size = this->len + dist;
+		/*
 		while (new_size < this->len + dist)
 		{
 			new_size *= 2;
 		}
+		*/
 		new_tab = (this->Alloc).allocate(new_size);
 		for (size_t i = 0 ; i < this->len + dist ; i++)
 		{
@@ -482,13 +487,19 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 		return ;
 	}
 	add = 0;
-	if (this->len + n > this->alen)
+	if (this->len + n > this->alen) //removed =
 	{
+		if (this->len * 2 >= this->len + n)
+			new_size = this->len * 2;
+		else
+			new_size = this->len + n;
+		/*
 		new_size = this->alen;
 		while (new_size < this->len + n)
 		{
 			new_size *= 2;
 		}
+		*/
 		new_tab = (this->Alloc).allocate(new_size);
 		for (size_t i = 0 ; i < this->len + n; i++)
 		{
@@ -548,7 +559,6 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 template<class T, class Allocator>
 typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterator position, const typename ft::vector<T, Allocator>::value_type &val)
 {
-
 	T* new_tab;
 	ft::vector<T, Allocator>::iterator ret;
 
@@ -556,7 +566,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 	{
 		if (position == this->begin() || position == this->end())
 			this->push_back(val);
-		return(this->tab);
+		return (this->tab);
 	}
 
 	if (this->len == this->alen)
@@ -571,6 +581,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 		}
 		(this->Alloc).construct(new_tab + i, val);
 		ret = new_tab + i;
+		i++;
 		while (i < this->len + 1)
 		{
 			this->Alloc.construct(new_tab + i, (this->tab)[i - 1]);
@@ -586,6 +597,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 	}
 	T temp0;
 	T temp1;
+
 
 	for (size_t i = 0 ; i < this->len + 1 ; i++)
 	{
@@ -770,7 +782,7 @@ void ft::vector<T, Allocator>::reserve(typename ft::vector<T, Allocator>::size_t
  
 	if (n > this->max_size())
 	{
-		throw (std::length_error("Too big memory reservation"));
+		throw (std::length_error("vector::reserve"));
 	}
 	if (n > this->alen)
 	{
@@ -881,7 +893,7 @@ ft::vector<T, Allocator>::~vector()
 	{
 		(this->Alloc).destroy(this->tab + i);
 	}
-	(this->Alloc).deallocate(this->tab, this->alen);
+	(this->Alloc).deallocate(this->tab, this->len);
 }
 
 template<class T, class Allocator>
@@ -908,14 +920,10 @@ void ft::vector<T, Allocator>::resize(ft::vector<T, Allocator>::size_type n, ft:
 	}
 	if (n > this->alen)
 	{
-		if (this->alen == 0)
-			new_alen = 1;
+		if (this->len * 2 >= n)
+			new_alen = this->len * 2;
 		else
-			new_alen = this->alen;
-		while (new_alen < n)
-		{
-			new_alen *= 2;
-		}
+			new_alen = n;
 		new_tab = (this->Alloc).allocate(new_alen);
 		for (size_t i = 0 ; i < this->len ; i++)
 			(this->Alloc).construct(new_tab + i, (this->tab)[i]);
@@ -940,7 +948,7 @@ void ft::vector<T, Allocator>::push_back(const value_type &val)
 	{
 		//std::cout << "lol" << std::endl;
 		if (this->tab != NULL)
-			(this->Alloc).deallocate(this->tab, 1);
+			(this->Alloc).deallocate(this->tab, this->len);
 		this->tab = (this->Alloc).allocate(1);
 		(this->Alloc).construct(this->tab, val);
 		this->len = 1;
@@ -954,7 +962,9 @@ void ft::vector<T, Allocator>::push_back(const value_type &val)
 		this->resize(this->alen * 2);
 		this->len = tmp;
 	}
-	this->tab[this->len] = val;
+	(this->Alloc).construct(this->tab + this->len, val);
+	//const value_type val_cpy = val;
+	//this->tab[this->len] = val;
 	(this->len)++;
 }
 
