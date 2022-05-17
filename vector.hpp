@@ -5,6 +5,31 @@
 #include "reverse_iterator.hpp"
 #include <stdlib.h>
 
+
+class Awesome {
+
+	public:
+
+		Awesome( void ) : _n( 42 ) { std::cout << "Default constructor" << std::endl; } //should not happen too often or else there is a wrong use of allocator (which calls the copy constructor)
+		Awesome( int n ) : _n( n ) { std::cout << "Int constructor" << std::endl; (void)n; }
+		Awesome( Awesome const &rhs ) : _n( 42 ) { *this = rhs;}
+		virtual ~Awesome(void) {}
+
+		Awesome &operator=( Awesome const & rhs ) { this->_n = rhs._n; return (*this); }
+		bool operator==( Awesome const & rhs ) const { return (this->_n == rhs._n); }
+		bool operator!=( Awesome const & rhs ) const { return (this->_n != rhs._n); }
+		bool operator>( Awesome const & rhs ) const { return (this->_n > rhs._n); }
+		bool operator<( Awesome const & rhs ) const { return (this->_n < rhs._n); }
+		bool operator>=( Awesome const & rhs ) const { return (this->_n >= rhs._n); }
+		bool operator<=( Awesome const & rhs ) const { return (this->_n <= rhs._n); }
+		void operator+=(int rhs){ _n += rhs; }
+		int get( void ) const { return this->_n; }
+
+	private:
+
+		int _n;
+};
+
 namespace ft
 {
 template<class T, class Allocator = std::allocator<T> >
@@ -174,19 +199,24 @@ ft::vector<T, Allocator> &ft::vector<T, Allocator>::operator=(const ft::vector<T
 {
 	size_t lenx;
 	size_t len;
+	size_t new_alen;
 	T* res;
 
 	lenx = x.size();
 	len = this->len;
+	if (lenx <= this->alen)
+		new_alen = this->alen;
+	else
+		new_alen = lenx;
 	this->Alloc = x.get_allocator();
-	res = (this->Alloc).allocate(lenx);
+	res = (this->Alloc).allocate(new_alen);
 	for (size_t i = 0 ; i < lenx ; i++)
 		(this->Alloc).construct(res + i, x.at(i));
 	for (size_t i = 0 ; i < len ; i++)
 		(this->Alloc).destroy(this->tab + i);
 	(this->Alloc).deallocate(this->tab, this->alen);
 	this->tab = res;
-	this->alen = lenx;
+	this->alen = new_alen;
 	this->len = lenx;
 	return (*this);
 }
@@ -443,7 +473,7 @@ void ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterato
 		this->len = add;
 		return ;
 	}
-	T temp_val;
+	T temp_val; //construction par defaut
 	ft::vector<T, Allocator> temp;
 
 	for (size_t i = 0 ; i < this->len + dist ; i++)
@@ -533,7 +563,20 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 		this->len = add;
 		return ;
 	}
-	T temp_val;
+
+	for (size_t i = this->len + n - 1 ; this->tab + i != position + n; i--)
+	{
+		(this->Alloc).construct(this->tab + i, this->tab[i - n]);
+		(this->Alloc).destroy(this->tab + i - n);
+	}
+	for (size_t i = 0 ; i < n ; i++)
+	{
+		//(this->Alloc).destroy(i);
+		(this->Alloc).construct(position + i, val);
+	}
+	return ;
+	/*
+	T temp_val; // construction par defaut
 
 	ft::vector<T, Allocator> temp;
 	for (size_t i = 0 ; i < this->len + n ; i++)
@@ -562,6 +605,7 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 			return ;
 		}
 	}
+	*/
 }
 
 template<class T, class Allocator>
@@ -603,8 +647,18 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 		this->len = i;
 		return (ret);
 	}
-	T temp0;
-	T temp1;
+
+	for (size_t i = this->len ; this->tab + i != position ; i--)
+	{
+		(this->Alloc).construct(this->tab + i, this->tab[i - 1]);
+		(this->Alloc).destroy(this->tab + i - 1);
+	}
+	(this->Alloc).construct(position, val);
+	return (position);
+
+	/*
+	T temp0; // construction par defaut
+	T temp1; // construction par defaut
 
 
 	for (size_t i = 0 ; i < this->len + 1 ; i++)
@@ -626,6 +680,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 			return (this->tab + i);
 		}
 	}
+	*/
 	return (NULL);
 }
 
@@ -647,7 +702,6 @@ template<class T, class Allocator>
 void ft::vector<T, Allocator>::assign(size_type n, const value_type &val)
 {
 	T* new_tab;
-	size_t len;
 
 	if (n > this->alen)
 	{
@@ -950,6 +1004,7 @@ template<class T, class Allocator>
 void ft::vector<T, Allocator>::push_back(const value_type &val)
 {
 	size_t tmp;
+
 	//std::cout << "strange "<< this->tab<< " and " << this->size() << std::endl;
 	if (this->len == 0 && this->alen == 0)
 	{
@@ -966,15 +1021,13 @@ void ft::vector<T, Allocator>::push_back(const value_type &val)
 	if (this->len == this->alen)
 	{
 		tmp = this->len;
-		this->resize(this->alen * 2);
+		this->reserve(2 * this->len);
 		this->len = tmp;
 	}
-	(this->Alloc).construct(this->tab + this->len, val);
-	//const value_type val_cpy = val;
-	//this->tab[this->len] = val;
+	this->Alloc.construct(this->tab + this->len, val);
 	(this->len)++;
+	return ;
 }
-
 /*
 template<class T, class Allocator>
 ft::vector<T, Allocator>::vector(const vector &x)
