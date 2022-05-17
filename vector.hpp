@@ -249,6 +249,14 @@ template<class T, class Allocator>
 ft::vector<T, Allocator>::vector(const vector &x)
 {
 	this->Alloc = x.get_allocator();
+	if (x.size() == 0)
+	{
+		this->tab = NULL;
+		this->alen = 0;
+		this->len = 0;
+		return ;
+	}
+
 	this->tab = (this->Alloc).allocate(x.size());
 	for (size_t i = 0 ; i < x.size() ; i++)
 	{
@@ -333,7 +341,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::erase(iter
 				(this->Alloc).destroy(this->tab + k + dist);
 			}
 			this->len = this->len - dist;
-			return(this->tab + i);
+			return (this->tab + i);
 		}
 	}
 	return (last);
@@ -639,6 +647,7 @@ template<class T, class Allocator>
 void ft::vector<T, Allocator>::assign(size_type n, const value_type &val)
 {
 	T* new_tab;
+	size_t len;
 
 	if (n > this->alen)
 	{
@@ -654,10 +663,9 @@ void ft::vector<T, Allocator>::assign(size_type n, const value_type &val)
 		this->alen = n;
 		return ;
 	}
+	this->clear();
 	for (size_t i = 0 ; i < n ; i++)
 	{
-		if (i < this->len)
-			(this->Alloc).destroy(this->tab + i);
 		(this->Alloc).construct(this->tab + i, val);
 	}
 	this->len = n;
@@ -697,10 +705,9 @@ void ft::vector<T, Allocator>::assign(InputIterator first, typename ft::enable_i
 		this->alen = dist;
 		return ;
 	}
+	this->clear();
 	for (size_t i = 0 ; i < dist ; i++)
 	{
-		if (i < this->len)
-			(this->Alloc).destroy(this->tab + i);
 		(this->Alloc).construct(this->tab + i, *first);
 		first++;
 	}
@@ -893,7 +900,7 @@ ft::vector<T, Allocator>::~vector()
 	{
 		(this->Alloc).destroy(this->tab + i);
 	}
-	(this->Alloc).deallocate(this->tab, this->len);
+	(this->Alloc).deallocate(this->tab, this->alen); //len or alen ?
 }
 
 template<class T, class Allocator>
@@ -913,7 +920,7 @@ void ft::vector<T, Allocator>::resize(ft::vector<T, Allocator>::size_type n, ft:
 	}
 	if (n > this->len && n <= this->alen)
 	{
-		for (size_t i = this->len ; i < this->alen ; i++)
+		for (size_t i = this->len ; i < n ; i++)
 			this->Alloc.construct(this->tab + i, val);
 		this->len = n;
 		return ;
@@ -948,7 +955,7 @@ void ft::vector<T, Allocator>::push_back(const value_type &val)
 	{
 		//std::cout << "lol" << std::endl;
 		if (this->tab != NULL)
-			(this->Alloc).deallocate(this->tab, this->len);
+			(this->Alloc).deallocate(this->tab, this->alen);
 		this->tab = (this->Alloc).allocate(1);
 		(this->Alloc).construct(this->tab, val);
 		this->len = 1;
