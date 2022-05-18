@@ -114,8 +114,17 @@ void test_awesome()
 
 void test_vector()
 {
-	test_awesome();
-/*
+	
+	ns::vector<int> insT;
+
+	insT.reserve(100);
+	std::cout << "s: " << insT.size() << "c: " << insT.capacity() << std::endl;
+	insT.push_back(1);insT.push_back(2);insT.push_back(3);insT.push_back(4);insT.push_back(5);insT.push_back(6);
+	std::cout << "s: " << insT.size() << "c: " << insT.capacity() << std::endl;
+	insT.insert(insT.begin() + 3, 10, 0);
+	display_vector(insT);
+	//test_awesome();
+    /*
 	ns::vector<int>::iterator lul;
 	ns::vector<int>::iterator otherlul(lul); --->classe iterateur
 	(void)otherlul;

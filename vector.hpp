@@ -5,7 +5,7 @@
 #include "reverse_iterator.hpp"
 #include <stdlib.h>
 
-
+/*
 class Awesome {
 
 	public:
@@ -29,6 +29,7 @@ class Awesome {
 
 		int _n;
 };
+*/
 
 namespace ft
 {
@@ -564,8 +565,9 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 		return ;
 	}
 
-	for (size_t i = this->len + n - 1 ; this->tab + i != position + n; i--)
+	for (size_t i = this->len + n - 1 ; position + n <= this->tab + i; i--)
 	{
+		//std::cout << " " << i << std::endl;
 		(this->Alloc).construct(this->tab + i, this->tab[i - n]);
 		(this->Alloc).destroy(this->tab + i - n);
 	}
@@ -574,6 +576,7 @@ void ft::vector<T, Allocator>::insert(ft::vector<T, Allocator>::iterator positio
 		//(this->Alloc).destroy(i);
 		(this->Alloc).construct(position + i, val);
 	}
+	this->len = this->len + n;
 	return ;
 	/*
 	T temp_val; // construction par defaut
@@ -654,6 +657,7 @@ typename ft::vector<T, Allocator>::iterator ft::vector<T, Allocator>::insert(typ
 		(this->Alloc).destroy(this->tab + i - 1);
 	}
 	(this->Alloc).construct(position, val);
+	(this->len)++;
 	return (position);
 
 	/*
@@ -1028,6 +1032,7 @@ void ft::vector<T, Allocator>::push_back(const value_type &val)
 	(this->len)++;
 	return ;
 }
+
 /*
 template<class T, class Allocator>
 ft::vector<T, Allocator>::vector(const vector &x)
