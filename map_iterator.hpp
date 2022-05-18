@@ -18,7 +18,6 @@ class map_iterator
 		bool sentinel;
 
 	public:
-
 		typedef size_t difference_type;
 		typedef ft::pair<const T, V> value_type;
 		typedef ft::pair<const T, V> * pointer;
@@ -245,7 +244,7 @@ ft::map_iterator<T, V, C> ft::map_iterator<T, V, C>::operator--(int)
 	tmp = *this;
 	if (this->sentinel == true)
 	{
-		res = *rac;
+		res = cur;
 		while(res->parent != NULL)
 			res = res->parent;
 		while (res->right != NULL)
@@ -289,7 +288,7 @@ ft::map_iterator<T, V, C> &ft::map_iterator<T, V, C>::operator--()
 
 	if (this->sentinel == true)
 	{
-		res = *rac;
+		res = cur;
 		while(res->parent != NULL)
 			res = res->parent;
 		while (res->right != NULL)

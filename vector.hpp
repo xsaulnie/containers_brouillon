@@ -4,8 +4,8 @@
 #include "utils.hpp"
 #include "reverse_iterator.hpp"
 #include <stdlib.h>
-
 /*
+
 class Awesome {
 
 	public:
@@ -474,6 +474,21 @@ void ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterato
 		this->len = add;
 		return ;
 	}
+
+	for (size_t i = this->len + dist - 1 ; position + dist <= this->tab + i; i--)
+	{
+		//std::cout << " " << i << std::endl;
+		(this->Alloc).construct(this->tab + i, this->tab[i - dist]);
+		(this->Alloc).destroy(this->tab + i - dist);
+	}
+	for (size_t i = 0 ; i < dist ; i++)
+	{
+		//(this->Alloc).destroy(i);
+		(this->Alloc).construct(position + i, *first);
+		first++;
+	}
+	this->len = this->len + dist;
+	/*
 	T temp_val; //construction par defaut
 	ft::vector<T, Allocator> temp;
 
@@ -504,6 +519,7 @@ void ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterato
 			return ;
 		}
 	}
+	*/
 }
 
 template<class T, class Allocator>

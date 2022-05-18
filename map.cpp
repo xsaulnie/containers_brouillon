@@ -2,6 +2,13 @@
 #include <string>
 #include <map>
 
+template <class Key, class T>
+void	print(ns::map<Key, T>& lst)
+{
+	for (typename ns::map<Key, T>::iterator it = lst.begin(); it != lst.end(); it++)
+		std::cout << it->first << " => " << it->second << '\n';
+	std::cout << std::endl;
+}
 
 template<class T, class V>
 void dispriter_map(ns::map<T, V> &m)
@@ -45,6 +52,76 @@ void disp_m(ns::map<Key, T, Compare> &m)
 
 void test_map()
 {
+	ns::map<char, int> foo, bar;
+	foo['x'] = 100;
+	foo['y'] = 200;
+
+	bar['a'] = 11;
+	bar['b'] = 22;
+	bar['c'] = 33;
+
+	ns::map<char, int>::const_iterator tmp = foo.begin();
+	ns::map<char, int>::const_iterator tmp2 = bar.begin();
+
+	foo.swap(bar);
+
+	//dispiter_map(foo);
+	//dispiter_map(bar);
+
+	ns::map<char, int>	other;
+
+  	other['1'] = 73;
+  	other['2'] = 173;
+  	other['3'] = 763;
+  	other['4'] = 73854;
+ 	other['5'] = 74683;
+  	other['6'] = 753;
+
+	ns::map<char, int>::const_iterator tmp3 = other.begin();
+
+
+	std::cout << "foo contains:\n";
+  	for (ns::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+    	std::cout << it->first << " => " << it->second << '\n';
+	std::cout << "bar contains:\n";
+  	for (ns::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+    	std::cout << it->first << " => " << it->second << '\n';
+	
+	std::cout << std::endl;
+	
+	std::cout << "bar iterator" << std::endl;
+	while (tmp != bar.end())
+	{
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+		tmp++;
+	}
+	std::cout << std::endl;
+	tmp--;
+
+	std::cout << "foo iterator" << std::endl;
+	while (tmp2 != foo.end())
+	{
+		std::cout << tmp2->first << " => " << tmp2->second << '\n';
+		tmp2++;
+	}
+	tmp2--;
+
+	std::cout << "other swap with foo"<< std::endl;
+	other.swap(foo);
+	std::cout << "other" << std::endl;
+	print(other);
+	std::cout << "foo" << std::endl;
+	print(foo);
+	std::cout << "bar" << std::endl;
+	print(bar);
+	std::cout << "bar iterator" << std::endl;
+	while(tmp != bar.begin())
+	{
+		std::cout << tmp->first << " => " << tmp->second << '\n';
+		tmp--;
+	}
+
+	return ;
 
 	ns::map<int, int> poulette;
 

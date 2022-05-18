@@ -309,7 +309,7 @@ ft::const_map_iterator<T, V, C> ft::const_map_iterator<T, V, C>::operator--(int)
 	tmp = *this;
 	if (this->sentinel == true)
 	{
-		res = *rac;
+		res = cur;
 		while(res->parent != NULL)
 			res = res->parent;
 		while (res->right != NULL)
@@ -353,7 +353,7 @@ ft::const_map_iterator<T, V, C> &ft::const_map_iterator<T, V, C>::operator--()
 
 	if (this->sentinel == true)
 	{
-		res = *rac;
+		res = cur;
 		while(res->parent != NULL)
 			res = res->parent;
 		while (res->right != NULL)
