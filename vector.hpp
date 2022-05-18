@@ -489,7 +489,7 @@ void ft::vector<T, Allocator>::insert(typename ft::vector<T, Allocator>::iterato
 	}
 	this->len = this->len + dist;
 	/*
-	T temp_val; //construction par defaut
+	T temp val; //construction par defaut
 	ft::vector<T, Allocator> temp;
 
 	for (size_t i = 0 ; i < this->len + dist ; i++)
