@@ -77,7 +77,7 @@ void test_map()
  	other['5'] = 74683;
   	other['6'] = 753;
 
-	ns::map<char, int>::const_iterator tmp3 = other.begin();
+	//ns::map<char, int>::const_iterator tmp3 = other.begin();
 
 
 	std::cout << "foo contains:\n";

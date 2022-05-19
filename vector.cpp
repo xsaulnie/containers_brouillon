@@ -1,7 +1,7 @@
 #include "vector.hpp"
 //#define ns ft
 
-std::ostream & operator<<( std::ostream & o, Awesome const & rhs ) { o << rhs.get(); return o; }
+//std::ostream & operator<<( std::ostream & o, Awesome const & rhs ) { o << rhs.get(); return o; }
 template<typename T>
 void displayit_vector(typename ns::vector<T> vec)
 {
@@ -75,6 +75,7 @@ void test_capacity(bool reserved)
 	}
 }
 
+/*
 void test_awesome()
 {
 	ns::vector<Awesome> test(21, 12);
@@ -97,20 +98,19 @@ void test_awesome()
 	test.insert(test.end(), test2.begin(), test2.end());
 	
 	display_vector(test);
-	/*
+	
 	test.insert(test.begin(), test2.begin(), test2.end());
 	display_vector(test);
-*/
 
 
-//	ns::vector<Awesome> test2;
-//	display_vector(test2);
+
+	//ns::vector<Awesome> test2;
+	//display_vector(test2);
 	//test2.push_back(12);
 	//test2.push_back(8);
 	//test2.push_back(16);
-
-
 }
+*/
 
 void test_vector()
 {
